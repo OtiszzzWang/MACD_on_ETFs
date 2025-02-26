@@ -48,6 +48,8 @@ The script will:
 
 ## Project Structure
 
+```
+.
 ├── data/
 │   ├── summary/
 │   │   ├── best_strategies.txt
@@ -62,6 +64,7 @@ The script will:
 ├── MACD_Based_Signals.py
 ├── requirements.txt
 └── README.md
+```
 
 ## Output
 The analysis generates several output files:
