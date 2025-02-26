@@ -49,15 +49,15 @@ The script will:
 ## Project Structure
 
 ├── data/
-│ ├── summary/
-│ │ ├── best_strategies.txt
-│ │ ├── sharpe_ratios.csv
-│ │ └── strategy_statistics.csv
-│ └── {ETF_SYMBOL}/
-│ ├── weekly_macd_signals.csv
-│ ├── weekly_macd_zero_cross.csv
-│ ├── weekly_vpvma_signals.csv
-│ └── weekly_vpvma_zero_cross.csv
+│   ├── summary/
+│   │   ├── best_strategies.txt
+│   │   ├── sharpe_ratios.csv
+│   │   └── strategy_statistics.csv
+│   └── {ETF_SYMBOL}/
+│       ├── weekly_macd_signals.csv
+│       ├── weekly_macd_zero_cross.csv
+│       ├── weekly_vpvma_signals.csv
+│       └── weekly_vpvma_zero_cross.csv
 ├── Signals.py
 ├── MACD_Based_Signals.py
 ├── requirements.txt
