@@ -37,7 +37,9 @@ def main():
         'strategy_distribution.png',
         'performance_comparison.png',
         'returns_vs_drawdown.png',
-        'win_ratio_vs_trades.png'
+        'win_ratio_vs_trades.png',
+        'category_performance.png',
+        'strategy_by_category.png'
     ]
     
     # Check if the directory exists

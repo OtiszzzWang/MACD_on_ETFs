@@ -207,23 +207,23 @@ def plot_category_performance(summary_df, output_dir='data/summary'):
     # Create subplots
     fig, axes = plt.subplots(2, 2, figsize=(14, 10))
     
-    # Plot Sharpe Ratio by category
-    sns.barplot(x='Category', y='Sharpe Ratio', data=category_metrics, ax=axes[0, 0], palette='viridis')
+    # Plot Sharpe Ratio by category - fixed to use hue instead of palette
+    sns.barplot(x='Category', y='Sharpe Ratio', hue='Category', data=category_metrics, ax=axes[0, 0], palette='viridis', legend=False)
     axes[0, 0].set_title('Average Sharpe Ratio by ETF Category', fontsize=14)
     axes[0, 0].set_ylabel('Sharpe Ratio')
     
-    # Plot Annual Return by category
-    sns.barplot(x='Category', y='Annual Return (%)', data=category_metrics, ax=axes[0, 1], palette='viridis')
+    # Plot Annual Return by category - fixed to use hue instead of palette
+    sns.barplot(x='Category', y='Annual Return (%)', hue='Category', data=category_metrics, ax=axes[0, 1], palette='viridis', legend=False)
     axes[0, 1].set_title('Average Annual Return by ETF Category', fontsize=14)
     axes[0, 1].set_ylabel('Annual Return (%)')
     
-    # Plot Max Drawdown by category
-    sns.barplot(x='Category', y='Max Drawdown (%)', data=category_metrics, ax=axes[1, 0], palette='viridis')
+    # Plot Max Drawdown by category - fixed to use hue instead of palette
+    sns.barplot(x='Category', y='Max Drawdown (%)', hue='Category', data=category_metrics, ax=axes[1, 0], palette='viridis', legend=False)
     axes[1, 0].set_title('Average Max Drawdown by ETF Category', fontsize=14)
     axes[1, 0].set_ylabel('Max Drawdown (%)')
     
-    # Plot Win Ratio by category
-    sns.barplot(x='Category', y='Win Ratio (%)', data=category_metrics, ax=axes[1, 1], palette='viridis')
+    # Plot Win Ratio by category - fixed to use hue instead of palette
+    sns.barplot(x='Category', y='Win Ratio (%)', hue='Category', data=category_metrics, ax=axes[1, 1], palette='viridis', legend=False)
     axes[1, 1].set_title('Average Win Ratio by ETF Category', fontsize=14)
     axes[1, 1].set_ylabel('Win Ratio (%)')
     
