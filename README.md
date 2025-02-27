@@ -74,6 +74,8 @@ macd-etf-analyzer
 ## Supported ETFs
 
 The package currently supports analysis of the following ETFs:
+
+### Country/Region ETFs
 - EEM (Emerging Markets)
 - VWO (Emerging Markets)
 - FXI (China Large-Cap)
@@ -88,6 +90,30 @@ The package currently supports analysis of the following ETFs:
 - EWU (United Kingdom)
 - VGK (Europe)
 - VPL (Pacific)
+
+### Sector ETFs
+- XLF (Financial Sector)
+- XLE (Energy Sector)
+- XLK (Technology Sector)
+- XLV (Healthcare Sector)
+- XLI (Industrial Sector)
+- XLP (Consumer Staples Sector)
+- XLY (Consumer Discretionary Sector)
+- XLB (Materials Sector)
+- XLU (Utilities Sector)
+- XLRE (Real Estate Sector)
+
+### Bond ETFs
+- AGG (US Aggregate Bond)
+- BND (Total Bond Market)
+- TLT (20+ Year Treasury Bond)
+- IEF (7-10 Year Treasury Bond)
+- SHY (1-3 Year Treasury Bond)
+- LQD (Investment Grade Corporate Bond)
+- HYG (High Yield Corporate Bond)
+- MUB (Municipal Bond)
+- EMB (Emerging Markets Bond)
+- BNDX (Total International Bond)
 
 ## Output
 
@@ -137,8 +163,10 @@ The program generates visual representations of the analysis results in the `dat
 - `performance_comparison.png`: Bar chart comparing ETF performance by Sharpe ratio
 - `returns_vs_drawdown.png`: Scatter plot showing the risk-return profile (annual return vs maximum drawdown)
 - `win_ratio_vs_trades.png`: Scatter plot showing trading efficiency (win ratio vs number of trades)
+- `category_performance.png`: Multi-panel chart comparing performance metrics across ETF categories (Country/Region, Sector, Bond)
+- `strategy_by_category.png`: Stacked bar chart showing strategy distribution by ETF category
 
-These visualizations provide a quick and intuitive way to understand the performance characteristics of different ETFs and strategies.
+These visualizations provide a quick and intuitive way to understand the performance characteristics of different ETFs and strategies, as well as how performance varies across different asset classes.
 
 ## Dependencies
 
@@ -152,5 +180,3 @@ These visualizations provide a quick and intuitive way to understand the perform
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-

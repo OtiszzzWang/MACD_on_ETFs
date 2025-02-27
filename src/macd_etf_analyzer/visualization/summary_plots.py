@@ -171,6 +171,117 @@ def plot_win_ratio_vs_trades(summary_df, output_dir='data/summary'):
     plt.savefig(os.path.join(output_dir, 'win_ratio_vs_trades.png'), dpi=300, bbox_inches='tight')
     plt.close()
 
+def plot_category_performance(summary_df, output_dir='data/summary'):
+    """
+    Plot performance comparison by ETF category (Country, Sector, Bond)
+    
+    Parameters:
+    -----------
+    summary_df : pandas.DataFrame
+        DataFrame with summary statistics for all ETFs
+    output_dir : str
+        Directory to save the plot
+    """
+    plt.figure(figsize=(14, 10))
+    
+    # Define ETF categories
+    country_etfs = ['EEM', 'VWO', 'FXI', 'AAXJ', 'EWJ', 'ACWX', 'CHIX', 'CQQQ', 
+                   'EWZ', 'ERUS', 'EWC', 'EWU', 'VGK', 'VPL']
+    sector_etfs = ['XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP', 'XLY', 'XLB', 'XLU', 'XLRE']
+    bond_etfs = ['AGG', 'BND', 'TLT', 'IEF', 'SHY', 'LQD', 'HYG', 'MUB', 'EMB', 'BNDX']
+    
+    # Add category column to DataFrame
+    summary_df['Category'] = 'Unknown'
+    summary_df.loc[summary_df['ETF'].isin(country_etfs), 'Category'] = 'Country/Region'
+    summary_df.loc[summary_df['ETF'].isin(sector_etfs), 'Category'] = 'Sector'
+    summary_df.loc[summary_df['ETF'].isin(bond_etfs), 'Category'] = 'Bond'
+    
+    # Calculate average metrics by category
+    category_metrics = summary_df.groupby('Category').agg({
+        'Sharpe Ratio': 'mean',
+        'Annual Return (%)': 'mean',
+        'Max Drawdown (%)': 'mean',
+        'Win Ratio (%)': 'mean'
+    }).reset_index()
+    
+    # Create subplots
+    fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+    
+    # Plot Sharpe Ratio by category
+    sns.barplot(x='Category', y='Sharpe Ratio', data=category_metrics, ax=axes[0, 0], palette='viridis')
+    axes[0, 0].set_title('Average Sharpe Ratio by ETF Category', fontsize=14)
+    axes[0, 0].set_ylabel('Sharpe Ratio')
+    
+    # Plot Annual Return by category
+    sns.barplot(x='Category', y='Annual Return (%)', data=category_metrics, ax=axes[0, 1], palette='viridis')
+    axes[0, 1].set_title('Average Annual Return by ETF Category', fontsize=14)
+    axes[0, 1].set_ylabel('Annual Return (%)')
+    
+    # Plot Max Drawdown by category
+    sns.barplot(x='Category', y='Max Drawdown (%)', data=category_metrics, ax=axes[1, 0], palette='viridis')
+    axes[1, 0].set_title('Average Max Drawdown by ETF Category', fontsize=14)
+    axes[1, 0].set_ylabel('Max Drawdown (%)')
+    
+    # Plot Win Ratio by category
+    sns.barplot(x='Category', y='Win Ratio (%)', data=category_metrics, ax=axes[1, 1], palette='viridis')
+    axes[1, 1].set_title('Average Win Ratio by ETF Category', fontsize=14)
+    axes[1, 1].set_ylabel('Win Ratio (%)')
+    
+    plt.tight_layout()
+    
+    # Save plot
+    os.makedirs(output_dir, exist_ok=True)
+    plt.savefig(os.path.join(output_dir, 'category_performance.png'), dpi=300, bbox_inches='tight')
+    plt.close()
+
+def plot_strategy_by_category(summary_df, output_dir='data/summary'):
+    """
+    Plot strategy distribution by ETF category
+    
+    Parameters:
+    -----------
+    summary_df : pandas.DataFrame
+        DataFrame with summary statistics for all ETFs
+    output_dir : str
+        Directory to save the plot
+    """
+    plt.figure(figsize=(12, 8))
+    
+    # Define ETF categories
+    country_etfs = ['EEM', 'VWO', 'FXI', 'AAXJ', 'EWJ', 'ACWX', 'CHIX', 'CQQQ', 
+                   'EWZ', 'ERUS', 'EWC', 'EWU', 'VGK', 'VPL']
+    sector_etfs = ['XLF', 'XLE', 'XLK', 'XLV', 'XLI', 'XLP', 'XLY', 'XLB', 'XLU', 'XLRE']
+    bond_etfs = ['AGG', 'BND', 'TLT', 'IEF', 'SHY', 'LQD', 'HYG', 'MUB', 'EMB', 'BNDX']
+    
+    # Add category column to DataFrame
+    summary_df['Category'] = 'Unknown'
+    summary_df.loc[summary_df['ETF'].isin(country_etfs), 'Category'] = 'Country/Region'
+    summary_df.loc[summary_df['ETF'].isin(sector_etfs), 'Category'] = 'Sector'
+    summary_df.loc[summary_df['ETF'].isin(bond_etfs), 'Category'] = 'Bond'
+    
+    # Create a cross-tabulation of Category vs Best Strategy
+    strategy_by_category = pd.crosstab(summary_df['Category'], summary_df['Best Strategy'])
+    
+    # Convert to percentage
+    strategy_by_category_pct = strategy_by_category.div(strategy_by_category.sum(axis=1), axis=0) * 100
+    
+    # Plot stacked bar chart
+    strategy_by_category_pct.plot(kind='bar', stacked=True, figsize=(12, 8), 
+                                 colormap='viridis')
+    
+    plt.title('Strategy Distribution by ETF Category', fontsize=16)
+    plt.xlabel('ETF Category', fontsize=12)
+    plt.ylabel('Percentage (%)', fontsize=12)
+    plt.legend(title='Strategy', bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.xticks(rotation=0)
+    
+    plt.tight_layout()
+    
+    # Save plot
+    os.makedirs(output_dir, exist_ok=True)
+    plt.savefig(os.path.join(output_dir, 'strategy_by_category.png'), dpi=300, bbox_inches='tight')
+    plt.close()
+
 def generate_summary_visualizations(summary_csv='data/summary/etf_strategy_summary.csv', output_dir='data/summary'):
     """
     Generate all summary visualizations
@@ -190,6 +301,10 @@ def generate_summary_visualizations(summary_csv='data/summary/etf_strategy_summa
     plot_performance_comparison(summary_df, output_dir)
     plot_returns_vs_drawdown(summary_df, output_dir)
     plot_win_ratio_vs_trades(summary_df, output_dir)
+    
+    # Generate category-based visualizations
+    plot_category_performance(summary_df, output_dir)
+    plot_strategy_by_category(summary_df, output_dir)
     
     print(f"Summary visualizations saved to {output_dir}")
 

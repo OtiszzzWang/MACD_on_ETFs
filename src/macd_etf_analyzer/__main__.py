@@ -79,6 +79,7 @@ def process_etf(symbol, start_date='2005-01-01', end_date='2023-12-31', initial_
 def main():
     # List of ETFs to analyze
     etfs = [
+        # Country/Region ETFs
         'EEM',  # Emerging Markets
         'VWO',  # Emerging Markets
         'FXI',  # China Large-Cap
@@ -92,7 +93,31 @@ def main():
         'EWC',  # Canada
         'EWU',  # United Kingdom
         'VGK',  # Europe
-        'VPL'   # Pacific
+        'VPL',  # Pacific
+        
+        # Sector ETFs
+        'XLF',  # Financial Sector
+        'XLE',  # Energy Sector
+        'XLK',  # Technology Sector
+        'XLV',  # Healthcare Sector
+        'XLI',  # Industrial Sector
+        'XLP',  # Consumer Staples Sector
+        'XLY',  # Consumer Discretionary Sector
+        'XLB',  # Materials Sector
+        'XLU',  # Utilities Sector
+        'XLRE', # Real Estate Sector
+        
+        # Bond ETFs
+        'AGG',  # US Aggregate Bond
+        'BND',  # Total Bond Market
+        'TLT',  # 20+ Year Treasury Bond
+        'IEF',  # 7-10 Year Treasury Bond
+        'SHY',  # 1-3 Year Treasury Bond
+        'LQD',  # Investment Grade Corporate Bond
+        'HYG',  # High Yield Corporate Bond
+        'MUB',  # Municipal Bond
+        'EMB',  # Emerging Markets Bond
+        'BNDX'  # Total International Bond
     ]
     
     # Dictionary to store results for all ETFs
