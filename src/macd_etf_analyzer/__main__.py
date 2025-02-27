@@ -1,0 +1,108 @@
+import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from .data.fetcher import download_data
+from .strategies.macd import get_macd_signals, get_macd_signals_zero_cross
+from .strategies.vpvma import get_vpvma_signals, get_vpvma_signals_zero_cross
+from .utils.performance import calculate_performance_metrics, get_trade_info
+
+def analyze_strategy_performance(results, symbol):
+    """Analyze and compare strategy performance for a ticker"""
+    strategy_metrics = {
+        'MACD': results[0],
+        'MACD Zero-Cross': results[1],
+        'VPVMA': results[2],
+        'VPVMA Zero-Cross': results[3]
+    }
+    
+    # Calculate Sharpe ratio for each strategy
+    sharpe_ratios = {}
+    for strategy_name, df in strategy_metrics.items():
+        returns = df['Strategy_Returns']
+        sharpe = np.sqrt(52) * returns.mean() / returns.std() if returns.std() != 0 else 0
+        sharpe_ratios[strategy_name] = sharpe
+    
+    # Find best strategy
+    best_strategy = max(sharpe_ratios.items(), key=lambda x: x[1])
+    
+    # Save performance comparison to ticker directory
+    ticker_dir = os.path.join('data', symbol.replace('^', ''))
+    performance_file = os.path.join(ticker_dir, 'strategy_comparison.txt')
+    
+    with open(performance_file, 'w') as f:
+        f.write(f"Strategy Performance Comparison for {symbol}\n")
+        f.write("=" * 50 + "\n\n")
+        f.write("Sharpe Ratios:\n")
+        for strategy, sharpe in sharpe_ratios.items():
+            f.write(f"{strategy}: {sharpe:.2f}\n")
+        f.write(f"\nBest Strategy: {best_strategy[0]} (Sharpe: {best_strategy[1]:.2f})")
+    
+    return best_strategy[0], sharpe_ratios
+
+def process_etf(symbol, start_date='2005-01-01', end_date='2023-12-31', initial_capital=1_000_000):
+    """Process all strategies for a single ETF"""
+    try:
+        # Create ETF-specific directory
+        ticker_dir = os.path.join('data', symbol.replace('^', ''))
+        os.makedirs(ticker_dir, exist_ok=True)
+        
+        # Download data once and reuse
+        df, vix_df = download_data(symbol, start_date, end_date)
+        
+        # Process all strategies in parallel
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            futures = []
+            futures.append(executor.submit(get_macd_signals, df=df.copy(), symbol=symbol))
+            futures.append(executor.submit(get_macd_signals_zero_cross, df=df.copy(), symbol=symbol))
+            futures.append(executor.submit(get_vpvma_signals, df=df.copy(), vix_df=vix_df.copy(), symbol=symbol))
+            futures.append(executor.submit(get_vpvma_signals_zero_cross, df=df.copy(), vix_df=vix_df.copy(), symbol=symbol))
+            
+            results = [f.result() for f in as_completed(futures)]
+            
+            # Analyze strategy performance
+            best_strategy, sharpe_ratios = analyze_strategy_performance(results, symbol)
+            print(f"\n{symbol} Best Strategy: {best_strategy}")
+            
+            return results, best_strategy, sharpe_ratios
+            
+    except Exception as e:
+        print(f"Error processing {etf}: {str(e)}")
+        return None
+
+def main():
+    # List of ETFs to analyze
+    etfs = [
+        'EEM',  # Emerging Markets
+        'VWO',  # Emerging Markets
+        'FXI',  # China Large-Cap
+        'AAXJ', # Asia ex-Japan
+        'EWJ',  # Japan
+        'ACWX', # All Country World ex-US
+        'CHIX', # China Technology
+        'CQQQ', # China Technology
+        'EWZ',  # Brazil
+        'ERUS', # Russia
+        'EWC',  # Canada
+        'EWU',  # United Kingdom
+        'VGK',  # Europe
+        'VPL'   # Pacific
+    ]
+    
+    # Process ETFs in parallel
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        futures = {executor.submit(process_etf, etf): etf for etf in etfs}
+        for future in as_completed(futures):
+            etf = futures[future]
+            try:
+                results = future.result()
+                if results:
+                    _, best_strategy, sharpe_ratios = results
+                    print(f"\nResults for {etf}:")
+                    print(f"Best Strategy: {best_strategy}")
+                    print("Sharpe Ratios:")
+                    for strategy, sharpe in sharpe_ratios.items():
+                        print(f"{strategy}: {sharpe:.2f}")
+            except Exception as e:
+                print(f"Error processing {etf}: {str(e)}")
+
+if __name__ == "__main__":
+    main() 
