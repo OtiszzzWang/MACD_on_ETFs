@@ -97,6 +97,49 @@ The analysis results are saved in a `data` directory, with each ETF having its o
 - Performance metrics
 - Visualization plots
 
+Additionally, comprehensive summary reports are generated in the `data/summary` directory:
+- `etf_strategy_summary.csv`: CSV file with summary statistics for all ETFs
+- `etf_strategy_report.txt`: Detailed text report with performance metrics for all ETFs
+- `all_trades_summary.csv`: CSV file with all trades across all ETFs
+- `trade_statistics_report.txt`: Detailed text report with trade statistics
+
+### Summary Reports
+
+The program generates comprehensive summary reports in the `data/summary` directory:
+
+- `etf_strategy_summary.csv`: CSV file with summary statistics for all ETFs
+- `etf_strategy_report.txt`: Detailed text report with performance metrics for all ETFs
+- `all_trades_summary.csv`: CSV file containing all trades across all ETFs
+- `trade_statistics_report.txt`: Detailed text report with trade statistics
+
+### ETF Strategy Report
+
+The ETF Strategy Report provides insights into the performance of different strategies across all ETFs, including:
+
+- Top performing ETFs by Sharpe ratio
+- Strategy distribution (percentage of ETFs using each strategy)
+- Performance statistics (average Sharpe ratio, annual return, max drawdown, win ratio)
+- Detailed performance metrics for each ETF
+
+### Trade Statistics Report
+
+The Trade Statistics Report provides detailed information about trading performance:
+
+- Overall trade statistics (total trades, winning trades, average PnL, average duration)
+- Trade statistics by ETF (total trades, winning trades, average PnL, best/worst trades)
+- Trade statistics by strategy (total trades, winning trades, average PnL, average duration)
+
+## Visualizations
+
+The program generates visual representations of the analysis results in the `data/summary` directory:
+
+- `strategy_distribution.png`: Pie chart showing the distribution of best strategies across ETFs
+- `performance_comparison.png`: Bar chart comparing ETF performance by Sharpe ratio
+- `returns_vs_drawdown.png`: Scatter plot showing the risk-return profile (annual return vs maximum drawdown)
+- `win_ratio_vs_trades.png`: Scatter plot showing trading efficiency (win ratio vs number of trades)
+
+These visualizations provide a quick and intuitive way to understand the performance characteristics of different ETFs and strategies.
+
 ## Dependencies
 
 - pandas
